@@ -5,7 +5,8 @@ import Web.Spock
 import Web.Spock.Config
 import Web.Spock.Lucid (lucid)
 import Lucid
-import Data.IORef (IORef, newIORef)
+import Data.IORef (IORef, newIORef, atomicModifyIORef')
+import Control.Monad.IO.Class (liftIO)
 
 data MySession =        EmptySession
 data MyAppState =       DummyAppState (IORef Int)
@@ -26,9 +27,12 @@ app = do
 
 rootAction :: MyAction
 rootAction = do
-  doCtx
+  (DummyAppState ref) <- getState
+  visitNum <- liftIO $ atomicModifyIORef' ref $ \i -> (i+1, i+1)
+  doCtx visitNum
 
-doCtx :: SpockActionCtx () () MySession MyAppState ()
-doCtx =
+doCtx :: Int -> SpockActionCtx () () MySession MyAppState ()
+doCtx i =
   lucid $ do
     h1_ "Hello"
+    h1_ $ toHtml $ show i
