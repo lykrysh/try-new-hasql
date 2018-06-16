@@ -21,3 +21,5 @@ executable try-new-hasql
                       , Spock
                       , Spock-lucid
                       , lucid
+                      , hasql
+                      , bytestring
