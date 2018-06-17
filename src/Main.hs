@@ -23,13 +23,12 @@ main = do
 app :: MyM
 app = do
   middleware (staticPolicy (addBase "static"))
-  get root rootAction
-  getpost "sign" signAction
-
-signAction :: MyAction
-signAction = do
-  (DummyAppState ref) <- getState
-  redirect "/"
+  get root displayEvents
+--  get root rootAction
+  post ("event" <//> var <//> "attending") $ \(eid :: EventId) ->
+    attendingAction eid (Just True)
+  post ("event" <//> var <//> "not-attending") $ \(eid :: EventId) ->
+    attendingAction eid (Just False)
 
 rootAction :: MyAction
 rootAction = do

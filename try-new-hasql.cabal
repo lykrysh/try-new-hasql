@@ -21,6 +21,8 @@ executable try-new-hasql
                       , configurator
                       , bytestring
                       , text
+                      , containers
+                      , time
                       , Spock
                       , Spock-lucid
                       , Spock-digestive
@@ -28,9 +30,15 @@ executable try-new-hasql
                       , digestive-functors-lucid
                       , lucid
                       , hasql
+                      , hasql-transaction
+                      , contravariant
                       , wai-middleware-static
                       , wai-extra
   other-modules:      Types
                     , Init
                     , Db
                     , ActionCtx
+  default-extensions:  OverloadedStrings
+                     , ViewPatterns
+                     , ScopedTypeVariables
+
