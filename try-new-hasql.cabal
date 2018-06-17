@@ -18,11 +18,13 @@ executable try-new-hasql
   main-is:             Main.hs
   default-language:    Haskell2010
   build-depends:       base >= 4.7 && < 5
+                      , configurator
+                      , bytestring
+                      , text
                       , Spock
                       , Spock-lucid
                       , lucid
                       , hasql
-                      , bytestring
                       , wai-middleware-static
                       , wai-extra
   other-modules:      Db
