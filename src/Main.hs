@@ -5,8 +5,10 @@ import Web.Spock
 import Web.Spock.Config
 import Web.Spock.Lucid (lucid)
 import Lucid
+import Lucid.Html5
 import Data.IORef (IORef, newIORef, atomicModifyIORef')
 import Control.Monad.IO.Class (liftIO)
+import Network.Wai.Middleware.Static (staticPolicy, addBase)
 import qualified Db as Db
 
 data MySession =        EmptySession
@@ -24,6 +26,7 @@ main = do
 
 app :: MyM
 app = do
+  middleware (staticPolicy (addBase "static"))
   get root rootAction
 
 rootAction :: MyAction
@@ -35,5 +38,10 @@ rootAction = do
 doCtx :: Int -> SpockActionCtx () Db.MyDb MySession MyAppState ()
 doCtx i =
   lucid $ do
-    h1_ "Hello"
-    h1_ $ toHtml $ show i
+    doctypehtml_ $ do
+      meta_ [ charset_ "utf-8" ]
+      head_ $ do
+        link_ [ rel_ "stylesheet", type_ "text/css", href_ "/css/base.css" ]
+      body_ $ do
+        h1_ "Hello"
+        h1_ $ toHtml $ show i

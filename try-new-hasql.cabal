@@ -23,4 +23,6 @@ executable try-new-hasql
                       , lucid
                       , hasql
                       , bytestring
+                      , wai-middleware-static
+                      , wai-extra
   other-modules:      Db
