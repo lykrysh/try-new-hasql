@@ -27,4 +27,6 @@ executable try-new-hasql
                       , hasql
                       , wai-middleware-static
                       , wai-extra
-  other-modules:      Db
+  other-modules:      Init
+                    , Db
+                    , Html
