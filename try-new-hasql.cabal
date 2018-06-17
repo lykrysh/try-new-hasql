@@ -23,8 +23,14 @@ executable try-new-hasql
                       , text
                       , Spock
                       , Spock-lucid
+                      , Spock-digestive
+                      , digestive-functors
+                      , digestive-functors-lucid
                       , lucid
                       , hasql
                       , wai-middleware-static
                       , wai-extra
-  other-modules:      Db
+  other-modules:      Types
+                    , Init
+                    , Db
+                    , ActionCtx
