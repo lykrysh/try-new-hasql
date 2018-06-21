@@ -70,16 +70,8 @@ getEventById eid = query eid $
 upsertAttendant :: Event -> Attendant -> Transaction ()
 upsertAttendant event att = query (event, att) $
   statement
-    "insert into attendants values ($1, $2, $3, $4) on conflict (event_id) do update set user_id = 'whoever', attending = true, follow_changes = true"
+    "insert into attendants (event_id, user_id, attending, follow_changes) values (4, 'whoever', true, true)"
     encodeAttendant
-    SqlD.unit
-    True
-
-removeAttendant :: Event -> Transaction ()
-removeAttendant event  = query (event) $
-  statement
-    "delete from attendants where event_id = $1"
-    encodeEventUserIds
     SqlD.unit
     True
 
@@ -89,6 +81,14 @@ encodeAttendant =
   <> contramap (attendantUser . snd) (SqlE.value SqlE.text)
   <> contramap (attendantAttending . snd) (SqlE.value SqlE.bool)
   <> contramap (attendantFollowsChanges. snd) (SqlE.value SqlE.bool)
+
+removeAttendant :: Event -> Transaction ()
+removeAttendant event  = query (event) $
+  statement
+    "delete from attendants where event_id = $1"
+    encodeEventUserIds
+    SqlD.unit
+    True
 
 encodeEventUserIds :: SqlE.Params (Event)
 encodeEventUserIds = contramap (eventId) (SqlE.value SqlE.int4)

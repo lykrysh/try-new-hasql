@@ -26,7 +26,7 @@ type EventId = Int32
 
 attendingAction :: EventId -> Maybe Bool -> MyActionCtx () ()
 attendingAction eid mIsAttending = do
-  let user = "whoever" :: T.Text
+--  let user = "whoever" :: T.Text
   getResults <- Db.readQuery (Db.getEventById eid)
   case getResults of
     Left (T.pack . show -> e) -> do
@@ -37,7 +37,7 @@ attendingAction eid mIsAttending = do
       upsertResult <- Db.writeQuery $
         case mIsAttending of
           Just isAttending ->
-            Db.upsertAttendant event (Attendant user isAttending isAttending)
+            Db.upsertAttendant event (Attendant "whoever" True True)
           Nothing ->
             Db.removeAttendant event
       case upsertResult of
@@ -101,6 +101,8 @@ attendants eid atts =
     div_ $ do
       h4_ "Not Going"
       ul_ . mapM_ attendant . filter (not . attendantAttending) $ atts
+    div_ $ do
+      hr_ []
     where
       attendant :: Attendant -> HT
       attendant (attendantUser -> u) = 
