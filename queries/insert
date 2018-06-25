@@ -1,0 +1,18 @@
+insert into films (title, signature, author, year) values ('Blood Orgy of the She-Devils', '1', 'Ted V. Mikels', 1973);
+insert into films (title, signature, author, year) values ('Snakes on a Plane', '2', 'David R. Ellis', 2006);
+insert into films (title, signature, author, year) values ('Invasion of the Blood Farmers', '3', 'Ed Adlum', 1972);
+insert into films (title, signature, author, year) values ('I Know How Many Runs You Scored Last Summer', '1', 'Doug Turner', 2008);
+insert into films (title, signature, author, year) values ('A Nymphoid Barbarian in Dinosaur Hell', '2', 'Brett Piper', 1988);
+insert into films (title, signature, author, year) values ('Hollywood Chainsaw Hookers', '3', 'Fred Olen Ray', 1988);
+insert into films (title, signature, author, year) values ('Frankenhooker', '1', 'Ken Dixon', 1987);
+insert into films (title, signature, author, year) values ('Beach Babes from Beyond', '2', 'David DeCoteau', 1993);
+insert into films (title, signature, author, year) values ('Bloodsucking Pharaohs in Pittsburgh', '3', 'Dean Tschetter', 1991);
+insert into films (title, signature, author, year) values ('Freddy Got Fingered', '1', 'Tom Green', 2001);
+insert into films (title, signature, author, year) values ('Evil Bong', '2', 'Charles Band', 2006);
+insert into films (title, signature, author, year) values ('Killer Klowns from Outer Space', '3', 'Stephen Chiodo', 1988);
+insert into films (title, signature, author, year) values ('Attack of the Killer Tomatoes!', '1', 'John De Bello', 1978);
+insert into films (title, signature, author, year) values ('Return of the Killer Tomatoes!', '2', 'John De Bello', 1988);
+insert into films (title, signature, author, year) values ('Killer Tomatoes Eat France!', '3', 'John De Bello', 1992);
+insert into films (title, signature, author, year) values ('Surf Nazis Must Die', '1', 'Peter George', 1987);
+insert into films (title, signature, author, year) values ('Killer Condom', '2', 'Martin Walz', 1996);
+insert into films (title, signature, author, year) values ('Terror at Blood Fart Lake', '3', 'Chris Seaver', 2009);

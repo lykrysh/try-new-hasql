@@ -25,10 +25,12 @@ executable try-new-hasql
                       , Spock-lucid
                       , lucid
                       , hasql
+                      , hasql-transaction
                       , wai-middleware-static
                       , wai-extra
   other-modules:      Types
                     , Init
                     , Db
-                    , Html
+                    , Actions
+                    , Render
   default-extensions: OverloadedStrings

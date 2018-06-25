@@ -5,6 +5,7 @@ import Web.Spock.Config
 import Hasql.Connection
 import Data.IORef (IORef)
 import Data.Int (Int32)
+import Data.Text
 
 
 type MyDb =             Connection
@@ -17,3 +18,11 @@ data MySession = EmptySession
                deriving (Show, Eq, Ord)
 
 data MyAppState = DummyAppState (IORef Int)
+
+data Film = Film
+  { filmId :: Int32
+  , title :: Text
+  , signature :: Text
+  , author :: Text
+  , year :: Int32
+  } deriving (Show, Eq, Ord)
