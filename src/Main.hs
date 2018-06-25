@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import Web.Spock
@@ -8,16 +7,10 @@ import Control.Monad.IO.Class (liftIO)
 import Network.Wai.Middleware.Static (staticPolicy, addBase)
 import Data.IORef (IORef, newIORef, atomicModifyIORef')
 
+import Types
 import Init
 import qualified Db as Db
 import Html
-
-type MyDb =             Db.Conn
-type MyM =              SpockM MyDb MySession MyAppState ()
-type MyAction =         SpockAction MyDb MySession MyAppState ()
-type MyActionCtx ctx =  SpockActionCtx ctx MyDb MySession MyAppState ()
-
-data MyAppState = DummyAppState (IORef Int)
 
 main :: IO ()
 main = do
@@ -38,7 +31,7 @@ rootAction = do
   visitNum <- liftIO $ atomicModifyIORef' ref $ \i -> (i+1, i+1)
   doCtx visitNum
 
-doCtx :: Int -> MyActionCtx ()
+doCtx :: Int -> MyActionCtx () ()
 doCtx i =
   lucid $ do
     renderTemplate

@@ -27,6 +27,8 @@ executable try-new-hasql
                       , hasql
                       , wai-middleware-static
                       , wai-extra
-  other-modules:      Init
+  other-modules:      Types
+                    , Init
                     , Db
                     , Html
+  default-extensions: OverloadedStrings
