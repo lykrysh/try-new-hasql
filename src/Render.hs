@@ -7,7 +7,10 @@ module Render where
 
 import Lucid
 import Lucid.Html5
-import Data.Text (pack)
+import Web.Spock.Digestive
+import qualified Text.Digestive as D
+import qualified Text.Digestive.Lucid.Html5 as D
+import Data.Text (pack, Text)
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
 import Hasql.Session (Error)
@@ -22,7 +25,7 @@ renderTemplate = do
     head_ $ do
       link_ [ rel_ "stylesheet", type_ "text/css", href_ "/css/base.css" ]
     body_ $ do
-      h1_ "Hello"
+      p_ "dummy"
 
 renderNum :: Int -> HT
 renderNum i = do
@@ -48,5 +51,15 @@ renderNewFilms filmList = do
           td_ $ toHtml (author f)
           td_ $ toHtml $ show (year f)
 
-
-
+renderFilters :: Text -> HT
+renderFilters action =
+  div_ [ class_ "filterbox" ] $ do
+    form_ [ class_ "filters", action_ action, method_ "post" ] $ do
+      input_ [ type_ "checkbox", value_ "1", id_ "cb0", name_ "cb0" ]
+      label_ [ for_ "cb0" ] $ "no CB0"
+      input_ [ type_ "checkbox", value_ "1", id_ "cb2", name_ "cb2" ]
+      label_ [ for_ "cb2" ] $ "no CB2"
+      input_ [ type_ "checkbox", value_ "1", id_ "cb3", name_ "cb3" ]
+      label_ [ for_ "cb3" ] $ "no CB3"
+      button_ [ class_ "checkout", type_ "submit" ] $ do
+        img_ [ src_ "/img/refresh.png" ]

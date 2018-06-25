@@ -1,1 +1,26 @@
 body { background: yellow }
+
+.filterbox {
+ width: 50%;
+ background: white;
+ margin: 3rem 0; padding: 2rem 0; 
+}
+
+button, input{
+ border: 0;
+ padding: 0;
+ margin-left: 20px;
+}
+
+.checkout { 
+ display: block; margin-top: 2rem;
+ border:0; outline: none;background-color:#fff;
+ height: 70px; width: 70px; 
+}
+.checkout img{ 
+ width: 70px; height: 70px; 
+ -webkit-filter:  brightness(5%); filter: brightness(5%);
+}
+.checkout img:hover {
+ -webkit-filter:  brightness(80%); filter: brightness(80%);
+}
