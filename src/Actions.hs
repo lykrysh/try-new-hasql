@@ -17,4 +17,5 @@ rootAction = do
     renderTemplate
     renderNum visitNum
     renderNewFilms newRelease
+    renderFilters ""
 

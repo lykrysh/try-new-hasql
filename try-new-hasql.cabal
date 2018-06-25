@@ -23,6 +23,9 @@ executable try-new-hasql
                       , text
                       , Spock
                       , Spock-lucid
+                      , Spock-digestive
+                      , digestive-functors
+                      , digestive-functors-lucid
                       , lucid
                       , hasql
                       , hasql-transaction
