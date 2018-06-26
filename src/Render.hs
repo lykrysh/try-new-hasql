@@ -26,6 +26,10 @@ renderTemplate = do
       link_ [ rel_ "stylesheet", type_ "text/css", href_ "/css/base.css" ]
     body_ $ do
       p_ "dummy"
+<<<<<<< HEAD
+=======
+
+>>>>>>> f37a07abb922930afa961fa7dfb3d8ce78703494
 
 renderNum :: Int -> HT
 renderNum i = do
@@ -55,6 +59,7 @@ renderFilters :: Text -> HT
 renderFilters action =
   div_ [ class_ "filterbox" ] $ do
     form_ [ class_ "filters", action_ action, method_ "post" ] $ do
+<<<<<<< HEAD
       input_ [ type_ "checkbox", value_ "1", id_ "cb0", name_ "cb0" ]
       label_ [ for_ "cb0" ] $ "no CB0"
       input_ [ type_ "checkbox", value_ "1", id_ "cb2", name_ "cb2" ]
