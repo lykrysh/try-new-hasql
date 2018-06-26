@@ -24,3 +24,7 @@ button, input{
 .checkout img:hover {
  -webkit-filter:  brightness(80%); filter: brightness(80%);
 }
+
+.searched {
+ color: #990000;
+}

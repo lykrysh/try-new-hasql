@@ -63,3 +63,24 @@ renderFilters action =
       label_ [ for_ "cb3" ] $ "no CB3"
       button_ [ class_ "checkout", type_ "submit" ] $ do
         img_ [ src_ "/img/refresh.png" ]
+
+renderSearchedFilms :: (Either Error [Film]) -> HT
+renderSearchedFilms filmList = div_ [ class_ "searched" ] $ do
+  case filmList of
+    Left (pack . show -> e) -> do
+      h1_ $ toHtml e
+    Right films -> do
+      table_ $ do
+        tr_ $ do
+          th_ "film_id"
+          th_ "title"
+          th_ "signature"
+          th_ "author"
+          th_ "year"
+        forM_ films $ \f -> tr_ $ do
+          td_ $ toHtml $ show (filmId f)
+          td_ $ toHtml (title f)
+          td_ $ toHtml (signature f)
+          td_ $ toHtml (author f)
+          td_ $ toHtml $ show (year f)
+

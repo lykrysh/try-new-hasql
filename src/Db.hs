@@ -34,6 +34,14 @@ getNewFilms = query () $
   (SqlD.rowsList decodeFilm)
   False
 
+getSearchedFilms :: Transaction [Film]
+getSearchedFilms = query () $
+  statement
+  "select * from films where signature='0' or signature='2' or signature='3';"
+  mempty
+  (SqlD.rowsList decodeFilm)
+  False
+
 decodeFilm :: SqlD.Row Film
 decodeFilm = Film
   <$> SqlD.value SqlD.int4 -- filmId

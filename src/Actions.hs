@@ -13,9 +13,11 @@ rootAction = do
   (DummyAppState ref) <- getState
   visitNum <- liftIO $ atomicModifyIORef' ref $ \i -> (i+1, i+1)
   newRelease <- Db.readQuery $ Db.getNewFilms
+  searched <- Db.readQuery $ Db.getSearchedFilms
   lucid $ do
     renderTemplate
     renderNum visitNum
     renderNewFilms newRelease
     renderFilters ""
+    renderSearchedFilms searched
 
