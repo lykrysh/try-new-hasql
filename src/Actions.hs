@@ -18,6 +18,11 @@ rootAction = do
     renderTemplate
     renderNum visitNum
     renderNewFilms newRelease
-    renderFilters ""
+    renderFilters "filter"
     renderSearchedFilms searched
 
+filterAction :: MyActionCtx () ()
+filterAction = do
+  lucid $ do
+    renderDummy
+--  redirect "/"
