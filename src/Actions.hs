@@ -6,7 +6,8 @@ import Data.IORef (atomicModifyIORef')
 import Control.Monad.IO.Class (liftIO)
 import qualified Db as Db
 import Types
-import Render
+import Render.Base
+import Render.Forms
 
 rootAction :: MyAction
 rootAction = do

@@ -35,5 +35,7 @@ executable try-new-hasql
                     , Init
                     , Db
                     , Actions
-                    , Render
+                    , Render.Base
+                    , Render.Forms
   default-extensions: OverloadedStrings
+                    , ViewPatterns
