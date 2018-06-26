@@ -9,7 +9,8 @@ import Hasql.Transaction
 import Hasql.Transaction.Sessions
 import Hasql.Session hiding (query)
 import Hasql.Decoders as SqlD
-import Types
+import Types.Base
+import Types.Films
 
 type Conn = Connection
 

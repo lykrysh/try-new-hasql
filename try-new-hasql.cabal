@@ -31,7 +31,8 @@ executable try-new-hasql
                       , hasql-transaction
                       , wai-middleware-static
                       , wai-extra
-  other-modules:      Types
+  other-modules:      Types.Base
+                    , Types.Films
                     , Init
                     , Db
                     , Actions

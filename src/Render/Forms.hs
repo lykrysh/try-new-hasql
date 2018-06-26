@@ -6,14 +6,9 @@ import Text.Digestive ((.:))
 import qualified Text.Digestive as D
 import qualified Text.Digestive.Lucid.Html5 as D
 import Data.Text (Text)
+import Types.Base
 
 type HT = Html ()
-
-data Filters = Filters
-  { noCb0 :: Bool
-    , noCb2 :: Bool
-    , noCb3 :: Bool
-  } deriving (Show)
 
 filtersForm :: Monad m => D.Form HT m Filters
 filtersForm = Filters

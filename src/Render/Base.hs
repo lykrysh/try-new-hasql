@@ -10,7 +10,7 @@ import Data.Text (pack, Text)
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
 import Hasql.Session (Error)
-import Types
+import Types.Films
 
 type HT = Html ()
 

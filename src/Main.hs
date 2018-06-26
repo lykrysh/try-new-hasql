@@ -5,7 +5,7 @@ import Web.Spock.Config
 import Network.Wai.Middleware.Static (staticPolicy, addBase)
 import Data.IORef (newIORef)
 
-import Types
+import Types.Base
 import Init
 import qualified Db as Db
 import Actions
