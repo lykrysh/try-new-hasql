@@ -66,7 +66,3 @@ renderSearchedFilms filmList = div_ [ class_ "searched" ] $ do
           td_ $ toHtml (signature f)
           td_ $ toHtml (author f)
           td_ $ toHtml $ show (year f)
-
-renderDummy :: HT
-renderDummy =
-  h1_ "whatever"

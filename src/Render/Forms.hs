@@ -5,11 +5,7 @@ import Lucid.Html5
 import Text.Digestive ((.:))
 import qualified Text.Digestive as D
 import qualified Text.Digestive.Lucid.Html5 as D
-import Data.Text (pack, Text)
-import Control.Monad (forM_)
-import Control.Monad.IO.Class (liftIO)
-import Hasql.Session (Error)
-import Types
+import Data.Text (Text)
 
 type HT = Html ()
 
@@ -44,3 +40,5 @@ renderFForm form action =
     (view, Nothing) -> do
       D.form view action $ do
         filtersFormView view
+--    (view, Just (Filters cb0 cb2 cb3)) -> do
+

@@ -1,6 +1,6 @@
 module Actions where
 
-import Web.Spock (getState)
+import Web.Spock 
 import Web.Spock.Lucid (lucid)
 import Web.Spock.Digestive (runForm)
 import Data.IORef (atomicModifyIORef')
@@ -15,8 +15,8 @@ rootAction = do
   (DummyAppState ref) <- getState
   visitNum <- liftIO $ atomicModifyIORef' ref $ \i -> (i+1, i+1)
   newRelease <- Db.readQuery $ Db.getNewFilms
-  searched <- Db.readQuery $ Db.getSearchedFilms
   form <- runForm "" RF.filtersForm
+  searched <- Db.readQuery $ Db.getSearchedFilms
   lucid $ do
     RB.renderTemplate
     RB.renderNum visitNum
@@ -24,8 +24,6 @@ rootAction = do
     RF.renderFForm form "filter"
     RB.renderSearchedFilms searched
 
-filterAction :: MyActionCtx () ()
+filterAction :: MyAction
 filterAction = do
-  lucid $ do
-    RB.renderDummy
---  redirect "/"
+  redirect "/"
