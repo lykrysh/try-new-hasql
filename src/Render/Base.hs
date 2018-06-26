@@ -6,7 +6,6 @@ module Render.Base where
 
 import Lucid
 import Lucid.Html5
-import Web.Spock.Digestive
 import Data.Text (pack, Text)
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
@@ -48,3 +47,26 @@ renderNewFilms filmList = do
           td_ $ toHtml (author f)
           td_ $ toHtml $ show (year f)
 
+renderSearchedFilms :: (Either Error [Film]) -> HT
+renderSearchedFilms filmList = div_ [ class_ "searched" ] $ do
+  case filmList of
+    Left (pack . show -> e) -> do
+      h1_ $ toHtml e
+    Right films -> do
+      table_ $ do
+        tr_ $ do
+          th_ "film_id"
+          th_ "title"
+          th_ "signature"
+          th_ "author"
+          th_ "year"
+        forM_ films $ \f -> tr_ $ do
+          td_ $ toHtml $ show (filmId f)
+          td_ $ toHtml (title f)
+          td_ $ toHtml (signature f)
+          td_ $ toHtml (author f)
+          td_ $ toHtml $ show (year f)
+
+renderDummy :: HT
+renderDummy =
+  h1_ "whatever"

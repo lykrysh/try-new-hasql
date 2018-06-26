@@ -1,12 +1,8 @@
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-
 module Render.Forms where
 
 import Lucid
 import Lucid.Html5
-import Web.Spock.Digestive
+import Text.Digestive ((.:))
 import qualified Text.Digestive as D
 import qualified Text.Digestive.Lucid.Html5 as D
 import Data.Text (pack, Text)
@@ -17,39 +13,34 @@ import Types
 
 type HT = Html ()
 
-renderFilters :: Text -> HT
-renderFilters action =
+data Filters = Filters
+  { noCb0 :: Bool
+    , noCb2 :: Bool
+    , noCb3 :: Bool
+  } deriving (Show)
+
+filtersForm :: Monad m => D.Form HT m Filters
+filtersForm = Filters
+  <$> "noCb0" .: D.bool Nothing
+  <*> "noCb2" .: D.bool Nothing
+  <*> "noCb3" .: D.bool Nothing
+
+filtersFormView :: D.View HT -> HT
+filtersFormView view =
   div_ [ class_ "filterbox" ] $ do
-    form_ [ class_ "filters", action_ action, method_ "post" ] $ do
-      input_ [ type_ "checkbox", value_ "1", id_ "cb0", name_ "cb0" ]
-      label_ [ for_ "cb0" ] $ "no CB0"
-      input_ [ type_ "checkbox", value_ "1", id_ "cb2", name_ "cb2" ]
-      label_ [ for_ "cb2" ] $ "no CB2"
-      input_ [ type_ "checkbox", value_ "1", id_ "cb3", name_ "cb3" ]
-      label_ [ for_ "cb3" ] $ "no CB3"
-      button_ [ class_ "checkout", type_ "submit" ] $ do
-        img_ [ src_ "/img/refresh.png" ]
+    D.inputCheckbox "noCb0" view
+    D.label "noCb0" view "no Cb0"
+    D.inputCheckbox "noCb2" view
+    D.label "noCb2" view "no Cb2"
+    D.inputCheckbox "noCb3" view
+    D.label "noCb3" view "no Cb3"
+    button_ [ class_ "checkout", type_ "submit" ] $ do
+      img_ [ src_ "/img/refresh.png" ]
+    -- D.inputSubmit "Save"
 
-renderSearchedFilms :: (Either Error [Film]) -> HT
-renderSearchedFilms filmList = div_ [ class_ "searched" ] $ do
-  case filmList of
-    Left (pack . show -> e) -> do
-      h1_ $ toHtml e
-    Right films -> do
-      table_ $ do
-        tr_ $ do
-          th_ "film_id"
-          th_ "title"
-          th_ "signature"
-          th_ "author"
-          th_ "year"
-        forM_ films $ \f -> tr_ $ do
-          td_ $ toHtml $ show (filmId f)
-          td_ $ toHtml (title f)
-          td_ $ toHtml (signature f)
-          td_ $ toHtml (author f)
-          td_ $ toHtml $ show (year f)
-
-renderDummy :: HT
-renderDummy =
-  h1_ "whatever"
+renderFForm :: (D.View HT, Maybe Filters) -> Text -> HT
+renderFForm form action =
+  case form of
+    (view, Nothing) -> do
+      D.form view action $ do
+        filtersFormView view
