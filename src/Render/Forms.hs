@@ -1,3 +1,7 @@
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
+
 module Render.Forms where
 
 import Lucid
@@ -7,6 +11,8 @@ import qualified Text.Digestive as D
 import qualified Text.Digestive.Lucid.Html5 as D
 import Data.Text (Text)
 import Types.Base
+import qualified Db as Db
+import qualified Render.Base as RB
 
 type HT = Html ()
 
@@ -35,6 +41,8 @@ renderFForm form action =
     (view, Nothing) -> do
       D.form view action $ do
         filtersFormView view
-    (_, Just (Filter cb0 cb2 cb3)) -> do
-      p_ "what"
+    (_, Just (Filter noCb0 noCb2 noCb3)) -> do
+      h1_ $ toHtml $ show noCb0
+      h1_ "what the"
+
 

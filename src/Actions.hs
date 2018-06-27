@@ -19,9 +19,11 @@ rootAction = do
   newRelease <- Db.readQuery $ Db.getNewFilms
   form <- runForm "" RF.filtersForm
   searched <- Db.readQuery $ Db.getSearchedFilms
+  filtersRef <- filters <$> getState
+  bummer <- liftIO $readIORef filtersRef
   lucid $ do
+    p_ $ toHtml $ show bummer
     RB.renderTemplate
---    RB.renderNum visitNum
     RB.renderNewFilms newRelease
     RF.renderFForm form "filter"
     RB.renderSearchedFilms searched
@@ -29,8 +31,8 @@ rootAction = do
 filterAction :: MyAction
 filterAction = do
   filtersRef <- filters <$> getState
-  --liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> [Filter noCb0 noCb2 noCb3], ())
-  bummer <- liftIO $ readIORef filtersRef
-  lucid $ do
-    p_ $ toHtml $ show bummer
-  --redirect "/"
+  liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> ["Hello"], ())
+--  bummer <- liftIO $ readIORef filtersRef
+--  lucid $ do
+--    p_ $ toHtml $ show bummer
+  redirect "/"

@@ -7,10 +7,12 @@ module Render.Base where
 import Lucid
 import Lucid.Html5
 import Data.Text (pack, Text)
+import Data.IORef (IORef, readIORef)
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
 import Hasql.Session (Error)
 import Types.Films
+import Types.Base
 
 type HT = Html ()
 
@@ -22,10 +24,6 @@ renderTemplate = do
       link_ [ rel_ "stylesheet", type_ "text/css", href_ "/css/base.css" ]
     body_ $ do
       p_ "dummy"
-
-renderNum :: Int -> HT
-renderNum i = do
-  h1_ $ toHtml $ show i
 
 renderNewFilms :: (Either Error [Film]) -> HT
 renderNewFilms filmList = do

@@ -5,6 +5,7 @@ import Web.Spock.Config
 import Hasql.Connection
 import Data.IORef (IORef)
 import Data.Int (Int32)
+import Data.Text
 
 type MyDb =             Connection
 type MyM =              SpockM MyDb MySession MyAppState ()
@@ -17,7 +18,7 @@ data MySession = EmptySession
 
 --data MyAppState = DummyAppState (IORef Int)
 data MyAppState = MyAppState
-  { filters :: IORef [Filter]
+  { filters :: IORef [Text]
   }
 
 data Filter = Filter
