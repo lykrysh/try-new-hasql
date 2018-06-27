@@ -15,9 +15,12 @@ data MySession = EmptySession
                | SessionId Int32
                deriving (Show, Eq, Ord)
 
-data MyAppState = DummyAppState (IORef Int)
+--data MyAppState = DummyAppState (IORef Int)
+data MyAppState = MyAppState
+  { filters :: IORef [Filter]
+  }
 
-data Filters = Filters
+data Filter = Filter
   { noCb0 :: Bool
     , noCb2 :: Bool
     , noCb3 :: Bool

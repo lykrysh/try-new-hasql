@@ -14,8 +14,8 @@ main :: IO ()
 main = do
   info <- parseInfo "site.config"
   let dbconn = cfgDbConnStr info
-  ref <- newIORef 0
-  cfg <- defaultSpockCfg EmptySession (PCConn $ Db.hasqlPool dbconn) (DummyAppState ref)
+  state <- MyAppState <$> newIORef []
+  cfg <- defaultSpockCfg EmptySession (PCConn $ Db.hasqlPool dbconn) state
   runSpock 8080 (spock cfg app)
 
 app :: MyM

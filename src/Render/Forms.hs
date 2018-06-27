@@ -10,8 +10,8 @@ import Types.Base
 
 type HT = Html ()
 
-filtersForm :: Monad m => D.Form HT m Filters
-filtersForm = Filters
+filtersForm :: Monad m => D.Form HT m Filter
+filtersForm = Filter
   <$> "noCb0" .: D.bool Nothing
   <*> "noCb2" .: D.bool Nothing
   <*> "noCb3" .: D.bool Nothing
@@ -25,15 +25,16 @@ filtersFormView view =
     D.label "noCb2" view "no Cb2"
     D.inputCheckbox "noCb3" view
     D.label "noCb3" view "no Cb3"
-    button_ [ class_ "checkout", type_ "submit" ] $ do
-      img_ [ src_ "/img/refresh.png" ]
-    -- D.inputSubmit "Save"
+--    button_ [ class_ "checkout", type_ "submit" ] $ do
+--      img_ [ src_ "/img/refresh.png" ]
+    D.inputSubmit "Save"
 
-renderFForm :: (D.View HT, Maybe Filters) -> Text -> HT
+renderFForm :: (D.View HT, Maybe Filter) -> Text -> HT
 renderFForm form action =
   case form of
     (view, Nothing) -> do
       D.form view action $ do
         filtersFormView view
---    (view, Just (Filters cb0 cb2 cb3)) -> do
+    (_, Just (Filter cb0 cb2 cb3)) -> do
+      p_ "what"
 
