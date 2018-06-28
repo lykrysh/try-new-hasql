@@ -3,6 +3,7 @@ module Actions where
 import Web.Spock
 import Web.Spock.Lucid (lucid)
 import Data.IORef (atomicModifyIORef', readIORef)
+import Data.Text (Text)
 import Data.Monoid ((<>))
 import Control.Monad.IO.Class (liftIO)
 import Types.Base
@@ -27,7 +28,7 @@ rootAction = do
     RF.renderFilters
     RB.renderSearchedFilms searched
 
-nonfictionAction :: MyAction
-nonfictionAction = do
+filterAction :: Text -> MyAction
+filterAction statename = do
   filtersRef <- filters <$> getState
-  liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> ["Non Fiction!!"], ())
+  liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> [statename], ())

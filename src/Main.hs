@@ -22,10 +22,10 @@ app :: MyM
 app = do
   middleware (staticPolicy (addBase "static"))
   get root rootAction
-  get "/nonfiction" nonfictionAction
-  get "/fiction" nonfictionAction
-  get "/surreal" nonfictionAction
-  get "/abstraction" nonfictionAction
-  get "/soundscape" nonfictionAction
+  get "/nonfiction" $ filterAction "nonfiction"
+  get "/fiction" $ filterAction "fiction"
+  get "/surreal" $ filterAction "surreal"
+  get "/abstraction" $ filterAction "abstraction"
+  get "/soundscape" $ filterAction "soundscape"
 
 

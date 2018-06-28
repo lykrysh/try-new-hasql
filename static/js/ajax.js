@@ -16,9 +16,9 @@ $(document).ready(function() {
       type: 'GET'
     });
   });
-
-	$('.but').click(function() {
-		$(this).toggleClass('buton'); 
-	});
+  
+  $('.but').click(function() {
+    $(this).toggleClass('buton');
+  });
 
 });
