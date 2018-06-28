@@ -18,7 +18,7 @@ type HT = Html ()
 
 filtersForm :: Monad m => D.Form HT m Filter
 filtersForm = Filter
-  <$> "noCb0" .: D.bool Nothing
+  <$> "noCb0" .: D.bool (Just True)
   <*> "noCb2" .: D.bool Nothing
   <*> "noCb3" .: D.bool Nothing
 
@@ -34,15 +34,3 @@ filtersFormView view =
 --    button_ [ class_ "checkout", type_ "submit" ] $ do
 --      img_ [ src_ "/img/refresh.png" ]
     D.inputSubmit "Save"
-
-renderFForm :: (D.View HT, Maybe Filter) -> Text -> HT
-renderFForm form action =
-  case form of
-    (view, Nothing) -> do
-      D.form view action $ do
-        filtersFormView view
-    (_, Just (Filter noCb0 noCb2 noCb3)) -> do
-      h1_ $ toHtml $ show noCb0
-      h1_ "what the"
-
-

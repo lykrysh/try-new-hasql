@@ -22,4 +22,4 @@ app :: MyM
 app = do
   middleware (staticPolicy (addBase "static"))
   get root rootAction
-  post "filter" filterAction
+  post root filterAction

@@ -40,3 +40,5 @@ executable try-new-hasql
                     , Render.Forms
   default-extensions: OverloadedStrings
                     , ViewPatterns
+                    , NamedFieldPuns
+                    , ScopedTypeVariables
