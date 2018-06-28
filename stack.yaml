@@ -4,6 +4,3 @@ packages:
 - .
 
 extra-deps: 
-- Spock-digestive-0.3.0.0
-- digestive-functors-0.8.3.0
-- digestive-functors-lucid-0.0.0.5

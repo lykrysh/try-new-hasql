@@ -23,9 +23,6 @@ executable try-new-hasql
                       , text
                       , Spock
                       , Spock-lucid
-                      , Spock-digestive
-                      , digestive-functors
-                      , digestive-functors-lucid
                       , lucid
                       , hasql
                       , hasql-transaction
@@ -37,8 +34,6 @@ executable try-new-hasql
                     , Db
                     , Actions
                     , Render.Base
-                    , Render.Forms
+                    , Render.Filters
   default-extensions: OverloadedStrings
                     , ViewPatterns
-                    , NamedFieldPuns
-                    , ScopedTypeVariables
