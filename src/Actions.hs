@@ -27,8 +27,7 @@ rootAction = do
     RF.renderFilters
     RB.renderSearchedFilms searched
 
-filterAction :: MyAction
-filterAction = do
+nonfictionAction :: MyAction
+nonfictionAction = do
   filtersRef <- filters <$> getState
-  liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> ["Hello"], ())
-  redirect "/"
+  liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> ["Non Fiction!!"], ())

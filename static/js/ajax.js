@@ -2,17 +2,16 @@ $(document).ready(function() {
 
 $('#nonfiction').click(function() {
    $.ajax({
-      url: 'https://api.joind.in/v2.1/talks/10889',
+     url: '/nonfiction',
       data: {
          format: 'json'
       },
       error: function() {
          $('#info').html('<p>An error has occurred</p>');
       },
-      dataType: 'jsonp',
+      dataType: 'text',
       success: function(data) {
-         var $title = $('<h1>').text(data.talks[0].talk_title);		
-         $('#info').html($title);
+         $('#info').html("NONFICTION GET");
          $('#info').css('background','#999999');
       },
       type: 'GET'

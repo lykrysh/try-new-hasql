@@ -22,3 +22,6 @@ app :: MyM
 app = do
   middleware (staticPolicy (addBase "static"))
   get root rootAction
+  get "/nonfiction" nonfictionAction
+
+
