@@ -23,7 +23,6 @@ renderFilters = do
       "Abstraction"
     a_ [ data_ "stateName" "soundscape", class_ "kwbutcommon but pntcursor", id_ "soundscape" ] $ do
       "Soundscape"
-  div_ [ id_ "viewall" ] ""
   div_ [ id_ "info" ] $ do
     h1_ "Something else"
   script_ [ type_ "text/javascript", src_ "/js/ajax.js" ] (mempty :: Text)
