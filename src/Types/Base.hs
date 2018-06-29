@@ -4,7 +4,7 @@ import Web.Spock
 import Web.Spock.Config
 import Hasql.Connection
 import Data.IORef (IORef)
-import Data.Int (Int32)
+import Data.Int (Int8, Int32)
 import Data.Text
 
 type MyDb =             Connection
@@ -16,13 +16,7 @@ data MySession = EmptySession
                | SessionId Int32
                deriving (Show, Eq, Ord)
 
---data MyAppState = DummyAppState (IORef Int)
 data MyAppState = MyAppState
-  { filters :: IORef [Text]
+  { filters :: IORef [Int8]
   }
 
-data Filter = Filter
-  { noCb0 :: Bool
-    , noCb2 :: Bool
-    , noCb3 :: Bool
-  } deriving (Show, Eq)

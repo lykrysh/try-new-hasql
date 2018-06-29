@@ -22,14 +22,14 @@ app = do
   middleware (staticPolicy (addBase "static"))
   get root rootAction
 
-  get ("/nonfiction" <//> "off") $ filterAction "nonfiction-off"
-  get ("/fiction" <//> "off") $ filterAction "fiction-off"
-  get ("/surreal" <//> "off") $ filterAction "surreal-off"
-  get ("/abstraction" <//> "off") $ filterAction "abstraction-off"
-  get ("/soundscape" <//> "off") $ filterAction "soundscape-off"
+  get ("/nonfiction" <//> "off") $ filterAction 1 False
+  get ("/fiction" <//> "off") $ filterAction 2 False
+  get ("/surreal" <//> "off") $ filterAction 3 False
+  get ("/abstraction" <//> "off") $ filterAction 4 False
+  get ("/soundscape" <//> "off") $ filterAction 5 False
 
-  get ("/nonfiction" <//> "on") $ filterAction "nonfiction-on"
-  get ("/fiction" <//> "on") $ filterAction "fiction-on"
-  get ("/surreal" <//> "on") $ filterAction "surreal-on"
-  get ("/abstraction" <//> "on") $ filterAction "abstraction-on"
-  get ("/soundscape" <//> "on") $ filterAction "soundscape-on"
+  get ("/nonfiction" <//> "on") $ filterAction 1 True
+  get ("/fiction" <//> "on") $ filterAction 2 True
+  get ("/surreal" <//> "on") $ filterAction 3 True
+  get ("/abstraction" <//> "on") $ filterAction 4 True
+  get ("/soundscape" <//> "on") $ filterAction 5 True

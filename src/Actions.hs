@@ -3,7 +3,7 @@ module Actions where
 import Web.Spock
 import Web.Spock.Lucid (lucid)
 import Data.IORef (atomicModifyIORef', readIORef)
-import Data.Text (Text)
+import Data.Int (Int8)
 import Data.Monoid ((<>))
 import Control.Monad.IO.Class (liftIO)
 import Types.Base
@@ -19,7 +19,8 @@ rootAction = do
   newRelease <- Db.readQuery $ Db.getNewFilms
   searched <- Db.readQuery $ Db.getSearchedFilms
   filtersRef <- filters <$> getState
-  bummer <- liftIO $readIORef filtersRef
+  liftIO $ atomicModifyIORef' filtersRef $ \f -> ([1..5], ())
+  bummer <- liftIO $ readIORef filtersRef
 
   lucid $ do
     RB.renderTemplate
@@ -28,7 +29,15 @@ rootAction = do
     RF.renderFilters
     RB.renderSearchedFilms searched
 
-filterAction :: Text -> MyAction
-filterAction statename = do
+filterAction :: Int8 -> Bool -> MyAction
+filterAction keyId on = do
   filtersRef <- filters <$> getState
-  liftIO $ atomicModifyIORef' filtersRef $ \f -> (f <> [statename], ())
+  case on of
+    True -> do
+      liftIO $ atomicModifyIORef' filtersRef $ \f -> ([keyId] <> f, ())
+    False -> do
+      liftIO $ atomicModifyIORef' filtersRef $ \f -> (removeItem keyId f, ())
+        where removeItem _ [] = []
+              removeItem x (y:ys) | x == y = removeItem x ys
+                | otherwise = y : removeItem x ys
+  redirect "/"
