@@ -21,7 +21,10 @@ app :: MyM
 app = do
   middleware (staticPolicy (addBase "static"))
   get root rootAction
-
+  get "/whois" $ do
+    cIp <- param' "ip"
+    cipAction cIp
+{-
   get ("/nonfiction" <//> "off") $ filterAction 1 False
   get ("/fiction" <//> "off") $ filterAction 2 False
   get ("/surreal" <//> "off") $ filterAction 3 False
@@ -33,3 +36,4 @@ app = do
   get ("/surreal" <//> "on") $ filterAction 3 True
   get ("/abstraction" <//> "on") $ filterAction 4 True
   get ("/soundscape" <//> "on") $ filterAction 5 True
+-}

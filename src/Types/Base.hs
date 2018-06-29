@@ -17,6 +17,6 @@ data MySession = EmptySession
                deriving (Show, Eq, Ord)
 
 data MyAppState = MyAppState
-  { filters :: IORef [Int8]
+  { filters :: IORef [Text]
   }
 

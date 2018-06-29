@@ -23,8 +23,9 @@ renderTemplate = do
     head_ $ do
       link_ [ rel_ "stylesheet", type_ "text/css", href_ "/css/base.css" ]
       script_ [ type_ "text/javascript", src_ "/js/jquery-3.2.1.min.js" ] (mempty :: Text)
+      script_ [ type_ "text/javascript", src_ "/js/whois.js" ] (mempty :: Text)
     body_ $ do
-      p_ "dummy"
+      p_ [ id_ "whois" ] "dummy"
 
 renderNewFilms :: (Either Error [Film]) -> HT
 renderNewFilms filmList = do
