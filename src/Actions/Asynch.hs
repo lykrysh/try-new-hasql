@@ -16,17 +16,39 @@ cipAction client_ip = do
   filtersRef <- filters <$> getState
 
   -- make session client_ip 
-  sessRes <- Db.writeQuery $ Db.newSession client_ip
+  sessRes <- Db.readQuery $ Db.getValidSessionId client_ip
   case sessRes of
     Left (pack . show -> e) -> do
       liftIO $ atomicModifyIORef' filtersRef $ \f -> ([e] <> f, ())
-    Right ji -> do
-      case ji of
-        Nothing -> 
-          liftIO $ atomicModifyIORef' filtersRef $ \f -> (["nothing"] <> f, ())
-        Just id -> do
-          writeSession(SessionId id)
-          liftIO $ atomicModifyIORef' filtersRef $ \f -> ([client_ip] <> f, ())
+    Right sr -> do
+      case sr of
+        Nothing -> do -- should make new session 
+          newSess <- Db.writeQuery $ Db.newSession client_ip
+          case newSess of
+            Left (pack . show -> e) -> do
+              liftIO $ atomicModifyIORef' filtersRef $ \f -> (["new"] <> [e] <> f, ())
+            Right justid -> do
+              case justid of
+                Nothing ->
+                  liftIO $ atomicModifyIORef' filtersRef $ \f -> (["new"] <> ["nothing"] <> f, ())
+                Just id -> do
+                  writeSession(SessionId id)
+                  liftIO $ atomicModifyIORef' filtersRef $ \f -> (["new"] <> [client_ip] <> f, ())
+        Just sessId -> do -- existing session
+          existingSess <- Db.writeQuery $ Db.extendSession sessId
+          case existingSess of
+            Left (pack . show -> e) -> do
+              liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> [e] <> f, ())
+            Right justid -> do
+              case justid of
+                Nothing ->
+                  liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> ["nothing"] <> f, ())
+                Just id -> do
+                  writeSession(SessionId id)
+                  liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> [client_ip] <> f, ())
+
+
+
   sess <- readSession
   case sess of
     EmptySession -> 
