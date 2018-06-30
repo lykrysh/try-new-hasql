@@ -16,3 +16,8 @@ insert into films (title, signature, author, year) values ('Killer Tomatoes Eat 
 insert into films (title, signature, author, year) values ('Surf Nazis Must Die', '1', 'Peter George', 1987);
 insert into films (title, signature, author, year) values ('Killer Condom', '2', 'Martin Walz', 1996);
 insert into films (title, signature, author, year) values ('Terror at Blood Fart Lake', '3', 'Chris Seaver', 2009);
+
+insert into sessions (user_name, valid_until) values ('108.180.159.235', now() + '1 month');
+delete from sessions where user_name = '108.180.159.235';
+
+

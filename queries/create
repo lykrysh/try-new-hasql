@@ -5,3 +5,36 @@ create table if not exists films (
 	author text,
 	year int
 );
+
+create table if not exists users (
+    user_id serial primary key,
+    user_name text unique not null
+);
+
+create table if not exists sessions (
+    session_id serial primary key,
+    user_name text not null,
+    valid_until timestamptz not null
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create table if not exists sessions (
+    user_id integer references users(user_id),
+    user_name text references users(user_name),
+    valid_until timestamptz not null,
+    primary key (user_id)
+);

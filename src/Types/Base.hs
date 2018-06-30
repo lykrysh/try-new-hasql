@@ -5,7 +5,7 @@ import Web.Spock.Config
 import Hasql.Connection
 import Data.IORef (IORef)
 import Data.Int (Int8, Int32)
-import Data.Text
+import Data.Text (Text)
 
 type MyDb =             Connection
 type MyM =              SpockM MyDb MySession MyAppState ()

@@ -21,6 +21,8 @@ executable try-new-hasql
                       , configurator
                       , bytestring
                       , text
+                      , time
+                      , contravariant
                       , Spock
                       , Spock-lucid
                       , lucid
@@ -32,7 +34,8 @@ executable try-new-hasql
                     , Types.Films
                     , Init
                     , Db
-                    , Actions
+                    , Actions.Root
+                    , Actions.Asynch
                     , Render.Base
                     , Render.Filters
   default-extensions: OverloadedStrings

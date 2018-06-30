@@ -7,7 +7,8 @@ import Data.IORef (newIORef)
 import Types.Base
 import Init
 import qualified Db as Db
-import Actions
+import Actions.Root
+import Actions.Asynch
 
 main :: IO ()
 main = do
@@ -20,7 +21,9 @@ main = do
 app :: MyM
 app = do
   middleware (staticPolicy (addBase "static"))
+
   get root rootAction
+
   get "/whois" $ do
     cIp <- param' "ip"
     cipAction cIp
