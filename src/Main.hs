@@ -24,9 +24,12 @@ app = do
 
   get root rootAction
 
+{-
   get "/whois" $ do
     cIp <- param' "ip"
     cipAction cIp
+-}
+
 {-
   get ("/nonfiction" <//> "off") $ filterAction 1 False
   get ("/fiction" <//> "off") $ filterAction 2 False

@@ -28,6 +28,8 @@ executable try-new-hasql
                       , lucid
                       , hasql
                       , hasql-transaction
+                      , network
+                      , wai
                       , wai-middleware-static
                       , wai-extra
   other-modules:      Types.Base
