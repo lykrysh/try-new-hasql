@@ -39,15 +39,11 @@ rootAction = do
     RF.renderFilters
     RB.renderSearchedFilms searched
 
-getIp :: Request -> T.Text
-getIp = do
-  L.head . T.splitOn ":" . T.pack . show . remoteHost
-
 startSession :: T.Text -> MyActionCtx () ()
 startSession client_ip = do
   filtersRef <- filters <$> getState
   -- make session client_ip 
-  sessRes <- Db.readQuery $ Db.getValidSessionId client_ip
+  sessRes <- Db.readQuery $ Db.getValidSessIdByIp client_ip
   case sessRes of
     Left (T.pack . show -> e) -> do
       liftIO $ atomicModifyIORef' filtersRef $ \f -> ([e] <> f, ())
@@ -70,17 +66,17 @@ startSession client_ip = do
           case existingSess of
             Left (T.pack . show -> e) -> do
               liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> [e] <> f, ())
-            Right justid -> do
-              case justid of
-                Nothing ->
-                  liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> ["nothing"] <> f, ())
-                Just id -> do
-                  writeSession(SessionId id)
-                  liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> [client_ip] <> f, ())
-
+            Right _ -> do
+              writeSession(SessionId sessId)
+              liftIO $ atomicModifyIORef' filtersRef $ \f -> (["existing"] <> [client_ip] <> f, ())
+  -- to check
   sess <- readSession
   case sess of
     EmptySession -> 
       liftIO $ atomicModifyIORef' filtersRef $ \f -> (["EmptySession"] <> f, ())
     SessionId uid -> do
       liftIO $ atomicModifyIORef' filtersRef $ \f -> ([T.pack $ show uid] <> f, ())
+
+getIp :: Request -> T.Text
+getIp = do
+  L.head . T.splitOn ":" . T.pack . show . remoteHost

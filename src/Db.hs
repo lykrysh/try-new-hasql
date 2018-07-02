@@ -38,16 +38,16 @@ runReadTransaction = transaction Serializable Read
 runWriteTransaction :: Transaction a -> Session a
 runWriteTransaction = transaction Serializable Write
 
-getValidSessionId :: Text -> Transaction (Maybe Int32)
-getValidSessionId ip = query ip $
+getValidSessIdByIp :: Text -> Transaction (Maybe Int32)
+getValidSessIdByIp ip = query ip $
   statement
     "select session_id from sessions where user_name=$1 and valid_until > now() order by valid_until desc limit 1"
     (SqlE.value SqlE.text)
     (SqlD.maybeRow (SqlD.value SqlD.int4))
     False
 
-getUpdatedSessionId :: Int32 -> Transaction (Maybe Int32)
-getUpdatedSessionId id = query id $
+getValidSessIdByNum :: Int32 -> Transaction (Maybe Int32)
+getValidSessIdByNum id = query id $
   statement
     "select session_id from sessions where session_id=$1 and valid_until > now() order by valid_until desc limit 1"
     (SqlE.value SqlE.int4)
@@ -61,17 +61,17 @@ newSession ip = do
     (SqlE.value SqlE.text)
     SqlD.unit
     True
-  getValidSessionId ip
+  getValidSessIdByIp ip
 
-extendSession :: Int32 -> Transaction (Maybe Int32)
+extendSession :: Int32 -> Transaction ()
 extendSession sessionid = do
   query sessionid $ statement
     "update sessions set valid_until=(now() + '2 days') where session_id=$1"
     (SqlE.value SqlE.int4)
     SqlD.unit
-    True
-  getUpdatedSessionId sessionid
+    False
 
+-- this is a good example
 encodeNewSession :: SqlE.Params UserSession
 encodeNewSession =
   contramap userName (SqlE.value SqlE.text)
