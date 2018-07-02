@@ -1,30 +1,14 @@
-module Db where
+module Db.Films where
 
-import Web.Spock
 import Data.Monoid ((<>))
 import Data.Text (Text)
 import Data.Int (Int32)
 import Data.Functor.Contravariant (contramap)
-import Hasql.Query
-import Hasql.Transaction
-import Hasql.Transaction.Sessions
-import Hasql.Session hiding (query)
+import Hasql.Query (statement)
+import Hasql.Transaction (Transaction, query)
 import Hasql.Decoders as SqlD
 import Hasql.Encoders as SqlE
-import Types.Base
 import Types.Films
-
-readQuery :: Transaction a -> MyActionCtx v (Either Error a)
-readQuery = runQuery . run . runReadTransaction
-
-writeQuery :: Transaction a -> MyActionCtx v (Either Error a)
-writeQuery = runQuery . run . runWriteTransaction
-
-runReadTransaction :: Transaction a -> Session a
-runReadTransaction = transaction Serializable Read
-
-runWriteTransaction :: Transaction a -> Session a
-runWriteTransaction = transaction Serializable Write
 
 getValidSessIdByIp :: Text -> Transaction (Maybe Int32)
 getValidSessIdByIp ip = query ip $

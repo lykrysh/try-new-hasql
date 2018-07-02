@@ -35,7 +35,8 @@ executable try-new-hasql
   other-modules:      Types.Base
                     , Types.Films
                     , Init
-                    , Db
+                    , Db.Base
+                    , Db.Films
                     , Actions.Root
                     , Actions.Asynch
                     , Render.Base

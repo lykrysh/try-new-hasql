@@ -6,7 +6,6 @@ import Data.Text (pack, Text)
 import Data.Monoid ((<>))
 import Control.Monad.IO.Class (liftIO)
 import Types.Base
-import qualified Db as Db
 
 filterAction :: Text -> Text -> MyAction
 filterAction filter toggled = do
