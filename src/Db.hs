@@ -1,13 +1,10 @@
 module Db where
 
 import Web.Spock
-import Web.Spock.Config
-import qualified Data.ByteString.Char8 as B 
 import Data.Monoid ((<>))
 import Data.Text (Text)
 import Data.Int (Int32)
 import Data.Functor.Contravariant (contramap)
-import Hasql.Connection
 import Hasql.Query
 import Hasql.Transaction
 import Hasql.Transaction.Sessions
@@ -16,15 +13,6 @@ import Hasql.Decoders as SqlD
 import Hasql.Encoders as SqlE
 import Types.Base
 import Types.Films
-
-type Conn = Connection
-
-hasqlPool :: B.ByteString -> ConnBuilder Conn
-hasqlPool setting = ConnBuilder
-  { cb_createConn = either (error . show . fmap B.unpack) id <$> acquire setting
-  , cb_destroyConn = release
-  , cb_poolConfiguration = PoolCfg 10 1000 30
-  }
 
 readQuery :: Transaction a -> MyActionCtx v (Either Error a)
 readQuery = runQuery . run . runReadTransaction

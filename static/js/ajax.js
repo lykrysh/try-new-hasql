@@ -5,8 +5,12 @@ $(document).ready(function() {
     var on = "off";
     if ($(this).hasClass('buton')) on = "on";
     $.ajax({
-      url: '/' + state + '/' + on,
-      data: { format: 'json'},
+      url: '/filters',
+      data: {
+        filter : state,
+        toggled : on,
+        format: 'json'
+      },
       error: function() {
         $('#info').html('<p>An error has occurred</p>');
       },
