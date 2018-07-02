@@ -83,4 +83,4 @@ startSession client_ip = do
     EmptySession -> 
       liftIO $ atomicModifyIORef' filtersRef $ \f -> (["EmptySession"] <> f, ())
     SessionId uid -> do
-      liftIO $ atomicModifyIORef' filtersRef $ \f -> (["success"] <> f, ())
+      liftIO $ atomicModifyIORef' filtersRef $ \f -> ([T.pack $ show uid] <> f, ())
