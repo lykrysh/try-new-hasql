@@ -43,11 +43,18 @@ extendSession sessionid = do
     SqlD.unit
     False
 
--- this is a good example
-encodeNewSession :: SqlE.Params UserSession
-encodeNewSession =
-  contramap userName (SqlE.value SqlE.text)
-  <> contramap validUntil (SqlE.value SqlE.timestamptz)
+toggleOnFilter :: SessFilter -> Transaction ()
+toggleOnFilter sf = do
+  query sf $ statement
+    "insert into session_filters (session_id, filter) values ($1, $2)"
+    encodeSessFilter
+    SqlD.unit
+    False
+
+encodeSessFilter :: SqlE.Params SessFilter
+encodeSessFilter =
+  contramap sessionFilterId (SqlE.value SqlE.int4)
+  <> contramap sessionFilter (SqlE.value SqlE.text)
 
 getNewFilms :: Transaction [Film]
 getNewFilms = query () $

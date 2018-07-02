@@ -20,7 +20,7 @@ create table sessions (
 create table session_filters (
   session_id integer references sessions(session_id),
   filter text,
-  UNIQUE (session_id, filter),
+  unique (session_id, filter),
   primary key (session_id)
 );
 

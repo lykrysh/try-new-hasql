@@ -1,13 +1,34 @@
 module Actions.Asynch where
 
-import Web.Spock
-import Data.IORef (atomicModifyIORef', readIORef)
+import Web.Spock (readSession, text)
+import Hasql.Session (Error)
 import Data.Text (pack, Text)
-import Data.Monoid ((<>))
 import Control.Monad.IO.Class (liftIO)
 import Types.Base
+import Types.Films
+import qualified Db.Base as DB
+import qualified Db.Films as DF
 
 filterAction :: Text -> Text -> MyAction
 filterAction filter toggled = do
-  filtersRef <- filters <$> getState
-  liftIO $ atomicModifyIORef' filtersRef $ \f -> ([filter] <> [toggled] <> f, ())
+  sess <- readSession
+  case sess of
+    EmptySession ->
+      text "error"
+    SessionId sid -> do
+      let sf = SessFilter sid filter
+      case toggled of
+        "on" -> do
+          turnedOn <- DB.writeQuery $ DF.toggleOnFilter sf
+          case turnedOn of
+            Left (pack . show -> e) -> do
+              text e
+            Right _ -> do
+              text "done"
+        "off" -> do
+          text "off"
+            -- delete where session_id, filter
+        _ -> do
+          text "don't know"
+            -- error
+

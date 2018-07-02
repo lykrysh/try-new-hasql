@@ -21,3 +21,12 @@ insert into sessions (user_name, valid_until) values ('108.180.159.235', now() +
 delete from sessions where user_name = '108.180.159.235';
 
 
+      "insert into events (event_name, event_description, 
+event_location, event_datetime, event_duration) values ($1, $2, $3, $4, $5) 
+returning event_id"
+
+    "insert into attendants values ($1, $2, $3, $4) 
+on conflict (event_id, user_id) 
+do update set attending = 
+EXCLUDED.attending, follow_changes = EXCLUDED.follow_changes"
+

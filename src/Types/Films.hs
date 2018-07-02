@@ -17,3 +17,8 @@ data UserSession = UserSession
   , userName :: Text
   , validUntil :: UTCTime
   } deriving (Show, Eq, Ord)
+
+data SessFilter = SessFilter
+  { sessionFilterId :: Int32
+  , sessionFilter :: Text
+  } deriving (Show, Eq, Ord)

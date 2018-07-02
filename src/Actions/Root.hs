@@ -1,10 +1,11 @@
 module Actions.Root where
 
-import Web.Spock
+import Web.Spock (getState, writeSession, readSession, request)
 import Web.Spock.Lucid (lucid)
+import Hasql.Session (Error)
 import Network.Wai (Request, remoteHost)
-import qualified Data.List as L
-import qualified Data.Text as T
+import qualified Data.List as L (head)
+import qualified Data.Text as T (Text, pack, splitOn)
 import Data.IORef (atomicModifyIORef', readIORef)
 import Control.Monad.IO.Class (liftIO)
 import Types.Base
@@ -15,8 +16,6 @@ import qualified Render.Filters as RF
 
 import Data.Int (Int8)
 import Data.Monoid ((<>))
-import Hasql.Session (Error)
-
 import Lucid
 import Lucid.Html5
 
@@ -41,14 +40,14 @@ rootAction = do
 startSession :: T.Text -> MyActionCtx () ()
 startSession client_ip = do
   filtersRef <- filters <$> getState
-  -- make session client_ip 
+  -- make session client_ip
   sessRes <- DB.readQuery $ DF.getValidSessIdByIp client_ip
   case sessRes of
     Left (T.pack . show -> e) -> do
       liftIO $ atomicModifyIORef' filtersRef $ \f -> ([e] <> f, ())
     Right sr -> do
       case sr of
-        Nothing -> do -- should make new session 
+        Nothing -> do -- should make new session
           newSess <- DB.writeQuery $ DF.newSession client_ip
           case newSess of
             Left (T.pack . show -> e) -> do
@@ -71,7 +70,7 @@ startSession client_ip = do
   -- to check
   sess <- readSession
   case sess of
-    EmptySession -> 
+    EmptySession ->
       liftIO $ atomicModifyIORef' filtersRef $ \f -> (["EmptySession"] <> f, ())
     SessionId uid -> do
       liftIO $ atomicModifyIORef' filtersRef $ \f -> ([T.pack $ show uid] <> f, ())
