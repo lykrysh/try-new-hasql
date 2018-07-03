@@ -10,6 +10,8 @@ import Hasql.Decoders as SqlD
 import Hasql.Encoders as SqlE
 import Types.Films
 
+{- session --}
+
 getValidSessIdByIp :: Text -> Transaction (Maybe Int32)
 getValidSessIdByIp ip = query ip $
   statement
@@ -69,6 +71,20 @@ toggleOnFilter id filter = do
       pure $ pure r
     Just _ ->
       pure $ Left "this filter already exists"
+
+toggleOffFilter :: Int32 -> Text -> Transaction (Either Text ())
+toggleOffFilter id filter = do
+  msf <- getSessFilter id filter
+  case msf of
+    Nothing ->
+      pure $ Left "this filter not found"
+    Just sf -> do
+      r <- query sf $ statement
+        "delete from session_filters where session_id = $1 and filter = $2"
+        encodeSessFilter
+        SqlD.unit
+        True
+      pure $ pure r
 
 encodeSessFilter :: SqlE.Params SessFilter
 encodeSessFilter =

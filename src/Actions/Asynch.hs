@@ -25,9 +25,12 @@ filterAction filter toggled = do
             Right _ -> do
               text "done"
         "off" -> do
-          text "off"
-            -- delete where session_id, filter
+          turnedOff <- DB.writeQuery $ DF.toggleOffFilter sid filter
+          case turnedOff of
+            Left (pack . show -> e) -> do
+              text e
+            Right _ -> do
+              text "done"
         _ -> do
           text "don't know"
-            -- error
 
