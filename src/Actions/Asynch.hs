@@ -3,6 +3,8 @@ module Actions.Asynch where
 import Web.Spock (readSession, text)
 import Hasql.Session (Error)
 import Data.Text (pack, Text)
+import Data.Int (Int32)
+import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
 import Types.Base
 import Types.Films
@@ -23,14 +25,23 @@ filterAction filter toggled = do
             Left (pack . show -> e) -> do
               text e
             Right _ -> do
-              text "done"
+              retrieveOn sid
         "off" -> do
           turnedOff <- DB.writeQuery $ DF.toggleOffFilter sid filter
           case turnedOff of
             Left (pack . show -> e) -> do
               text e
             Right _ -> do
-              text "done"
+              retrieveOn sid
         _ -> do
           text "don't know"
 
+retrieveOn :: Int32 -> MyActionCtx () ()
+retrieveOn sid = do
+  filtersOn <- DB.readQuery $ DF.getOnFilters sid
+  case filtersOn of
+    Left (pack . show -> e) -> do
+      text e
+    Right filters -> do
+      forM_ filters $ \f ->
+        text $ sessionFilter f

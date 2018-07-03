@@ -4,6 +4,7 @@ $(document).ready(function() {
     var state = $(this).attr('data-stateName');
     var on = "off";
     if ($(this).hasClass('buton')) on = "on";
+
     $.ajax({
       url: '/filters',
       data: {
@@ -15,12 +16,14 @@ $(document).ready(function() {
         $('#info').html('<p>An error has occurred</p>');
       },
       dataType: 'text',
-      success: function(data) {
-         $('#info').html(state);
+      success: function(response) {
+         $('#info').html(response);
          $('#info').css('background','#999999');
       },
       type: 'GET'
     });
+
+
   });
   
   $('.but').click(function() {

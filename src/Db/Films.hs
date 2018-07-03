@@ -86,16 +86,13 @@ toggleOffFilter id filter = do
         True
       pure $ pure r
 
-{-
-retrieveOnFilters :: Int32 -> Transaction (Maybe [SessFilter])
-retrieveOnFilters id = do
-  filters <- query id $
-    statement
-      "select * from session_filters where sesson_id = $1 order by added_at desc"
-      (SqlE.value SqlE.int4)
-      (SqlD.rowsList decodeSessFilter)
-      True
--}
+getOnFilters :: Int32 -> Transaction [SessFilter]
+getOnFilters id = query id $
+  statement
+    "select session_id, filter from session_filters where session_id = $1 order by added_at desc"
+    (SqlE.value SqlE.int4)
+    (SqlD.rowsList decodeSessFilter)
+    True
 
 encodeSessFilter :: SqlE.Params (Int32, Text)
 encodeSessFilter =
