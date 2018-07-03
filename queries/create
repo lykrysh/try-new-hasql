@@ -20,6 +20,7 @@ create table sessions (
 create table session_filters (
   session_id integer references sessions(session_id),
   filter text,
+  added_at timestamptz,
   unique (session_id, filter)
 );
 

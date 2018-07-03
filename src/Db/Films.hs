@@ -50,27 +50,27 @@ extendSession sessionid = do
 getSessFilter :: Int32 -> Text -> Transaction (Maybe SessFilter)
 getSessFilter id filter =
   query (id, filter) $ statement
-    "select session_id, filter from session_filters where session_id = $1 and filter = $2"
-    (  contramap fst (SqlE.value SqlE.int4)
-    <> contramap snd (SqlE.value SqlE.text)
-    )
+    "select * from session_filters where session_id = $1 and filter = $2"
+    encodeSessFilter
     (SqlD.maybeRow decodeSessFilter)
     True
 
-toggleOnFilter :: Int32 -> Text -> Transaction (Either Text ())
+toggleOnFilter :: Int32 -> Text -> Transaction ()
 toggleOnFilter id filter = do
   msf <- getSessFilter id filter
   case msf of
-    Nothing -> do
-      let sf = SessFilter id filter
-      r <- query sf $ statement
-        "insert into session_filters (session_id, filter) values ($1, $2)"
+    Nothing ->
+      query (id, filter) $ statement
+        "insert into session_filters (session_id, filter, added_at) values ($1, $2, now())"
         encodeSessFilter
         SqlD.unit
         True
-      pure $ pure r
-    Just _ ->
-      pure $ Left "this filter already exists"
+    Just _ -> -- this will never happen anyways
+      query (id, filter) $ statement
+        "update session_filters set added_at = now() where session_id = $1 and filter = $2"
+        encodeSessFilter
+        SqlD.unit
+        True
 
 toggleOffFilter :: Int32 -> Text -> Transaction (Either Text ())
 toggleOffFilter id filter = do
@@ -79,17 +79,29 @@ toggleOffFilter id filter = do
     Nothing ->
       pure $ Left "this filter not found"
     Just sf -> do
-      r <- query sf $ statement
+      r <- query ((sessionFilterId sf), (sessionFilter sf)) $ statement
         "delete from session_filters where session_id = $1 and filter = $2"
         encodeSessFilter
         SqlD.unit
         True
       pure $ pure r
 
-encodeSessFilter :: SqlE.Params SessFilter
+{-
+retrieveOnFilters :: Int32 -> Transaction (Maybe [SessFilter])
+retrieveOnFilters id = do
+  filters <- query id $
+    statement
+      "select * from session_filters where sesson_id = $1 order by added_at desc"
+      (SqlE.value SqlE.int4)
+      (SqlD.rowsList decodeSessFilter)
+      True
+-}
+
+encodeSessFilter :: SqlE.Params (Int32, Text)
 encodeSessFilter =
-  contramap sessionFilterId (SqlE.value SqlE.int4)
-  <> contramap sessionFilter (SqlE.value SqlE.text)
+  (  contramap fst (SqlE.value SqlE.int4)
+  <> contramap snd (SqlE.value SqlE.text)
+  )
 
 decodeSessFilter :: SqlD.Row SessFilter
 decodeSessFilter = SessFilter
