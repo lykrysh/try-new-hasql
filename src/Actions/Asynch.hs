@@ -16,10 +16,9 @@ filterAction filter toggled = do
     EmptySession ->
       text "error"
     SessionId sid -> do
-      let sf = SessFilter sid filter
       case toggled of
         "on" -> do
-          turnedOn <- DB.writeQuery $ DF.toggleOnFilter sf
+          turnedOn <- DB.writeQuery $ DF.toggleOnFilter sid filter
           case turnedOn of
             Left (pack . show -> e) -> do
               text e

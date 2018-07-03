@@ -16,7 +16,7 @@ getValidSessIdByIp ip = query ip $
     "select session_id from sessions where user_name=$1 and valid_until > now() order by valid_until desc limit 1"
     (SqlE.value SqlE.text)
     (SqlD.maybeRow (SqlD.value SqlD.int4))
-    False
+    True
 
 getValidSessIdByNum :: Int32 -> Transaction (Maybe Int32)
 getValidSessIdByNum id = query id $
@@ -24,7 +24,7 @@ getValidSessIdByNum id = query id $
     "select session_id from sessions where session_id=$1 and valid_until > now() order by valid_until desc limit 1"
     (SqlE.value SqlE.int4)
     (SqlD.maybeRow (SqlD.value SqlD.int4))
-    False
+    True
 
 newSession :: Text -> Transaction (Maybe Int32)
 newSession ip = do
@@ -41,20 +41,46 @@ extendSession sessionid = do
     "update sessions set valid_until=(now() + '2 days') where session_id=$1"
     (SqlE.value SqlE.int4)
     SqlD.unit
-    False
+    True
 
-toggleOnFilter :: SessFilter -> Transaction ()
-toggleOnFilter sf = do
-  query sf $ statement
-    "insert into session_filters (session_id, filter) values ($1, $2)"
-    encodeSessFilter
-    SqlD.unit
-    False
+{- session_filters -}
+
+getSessFilter :: Int32 -> Text -> Transaction (Maybe SessFilter)
+getSessFilter id filter =
+  query (id, filter) $ statement
+    "select session_id, filter from session_filters where session_id = $1 and filter = $2"
+    (  contramap fst (SqlE.value SqlE.int4)
+    <> contramap snd (SqlE.value SqlE.text)
+    )
+    (SqlD.maybeRow decodeSessFilter)
+    True
+
+toggleOnFilter :: Int32 -> Text -> Transaction (Either Text ())
+toggleOnFilter id filter = do
+  msf <- getSessFilter id filter
+  case msf of
+    Nothing -> do
+      let sf = SessFilter id filter
+      r <- query sf $ statement
+        "insert into session_filters (session_id, filter) values ($1, $2)"
+        encodeSessFilter
+        SqlD.unit
+        True
+      pure $ pure r
+    Just _ ->
+      pure $ Left "this filter already exists"
 
 encodeSessFilter :: SqlE.Params SessFilter
 encodeSessFilter =
   contramap sessionFilterId (SqlE.value SqlE.int4)
   <> contramap sessionFilter (SqlE.value SqlE.text)
+
+decodeSessFilter :: SqlD.Row SessFilter
+decodeSessFilter = SessFilter
+  <$> SqlD.value SqlD.int4 -- sessionid
+  <*> SqlD.value SqlD.text -- filter
+
+{- Retrieve film list -}
 
 getNewFilms :: Transaction [Film]
 getNewFilms = query () $
