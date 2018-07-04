@@ -44,4 +44,4 @@ retrieveOn sid = do
       text e
     Right filters -> do
       forM_ filters $ \f ->
-        text $ sessionFilter f
+        text f
