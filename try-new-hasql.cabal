@@ -26,6 +26,7 @@ executable try-new-hasql
                       , Spock
                       , Spock-lucid
                       , lucid
+                      , aeson
                       , hasql
                       , hasql-transaction
                       , network

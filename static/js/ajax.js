@@ -15,7 +15,7 @@ $(document).ready(function() {
       error: function() {
         $('#info').html('<p>An error has occurred</p>');
       },
-      dataType: 'text',
+      dataType: 'json',
       success: function(response) {
          $('#info').html(response);
          $('#info').css('background','#999999');
